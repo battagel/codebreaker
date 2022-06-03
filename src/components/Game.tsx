@@ -14,9 +14,11 @@ import { useState } from "react";
 
 export default function Game() {
   const [hiddenCode, setHiddenCode] = useState<boolean>(true);
-  const [prevGuesses, setPrevGuesses] = useLocalStorageValue<Array<number[]>>({
+  const [prevGuesses, setPrevGuesses] = useLocalStorageValue<
+    Array<Array<number[]>>
+  >({
     key: "previous_guesses",
-    defaultValue: [[1, 1, 1, 1, 1]],
+    defaultValue: [],
   });
 
   const [newGameModal, setNewGameModal] = useState<boolean>(false);
@@ -49,11 +51,15 @@ export default function Game() {
   function makeGuess() {
     const guessString: string = currentGuess.toString();
     console.log("Making guess of: " + guessString);
-    //setPrevGuesses([normal_guess, ...prevGuesses]);
+    const guessResult: number[] = checkGuess();
+    const guessAndResult: Array<number[]> = [guessResult, currentGuess];
+    setPrevGuesses([guessAndResult, ...prevGuesses]);
+    if (guessResult === [5, 0]) {
+      winGame();
+    }
   }
 
   function checkGuess() {
-    let blacksAndWhites: [number, number];
     var blacks: number = 0;
     var whites: number = 0;
 
@@ -81,7 +87,7 @@ export default function Game() {
       }
     }
 
-    return;
+    return [1, 2, 3, 4];
   }
 
   function winGame() {
@@ -102,7 +108,7 @@ export default function Game() {
       <Space h="md" />
       <Container>
         <Stack>
-          {prevGuesses.map((prevGuess: number[]) => (
+          {prevGuesses.map((prevGuess: Array<number[]>) => (
             <GuessRow prevGuess={prevGuess} />
           ))}
         </Stack>
@@ -145,13 +151,13 @@ function Code({ code, hidden }: CodeProp) {
 }
 
 type prevGuessProp = {
-  prevGuess: number[];
+  prevGuess: Array<number[]>;
 };
 
 function GuessRow({ prevGuess }: prevGuessProp) {
   return (
     <Group position="center">
-      {prevGuess.map((peg: number) => (
+      {prevGuess[1].map((peg: number) => (
         <Peg peg={peg} />
       ))}
     </Group>
