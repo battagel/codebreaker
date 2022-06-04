@@ -45,6 +45,7 @@ export default function Game() {
     for (var i = 0; i < CODE_LENGTH; i++) {
       new_code.push(Math.floor(Math.random() * NUM_COLOURS));
     }
+    console.log(new_code);
     setCurrentCode(new_code);
   }
 
@@ -54,7 +55,9 @@ export default function Game() {
     const guessResult: number[] = checkGuess();
     const guessAndResult: Array<number[]> = [guessResult, currentGuess];
     setPrevGuesses([guessAndResult, ...prevGuesses]);
-    if (guessResult === [5, 0]) {
+    console.log(guessResult);
+    if (JSON.stringify(guessResult) === JSON.stringify([0, 0, 0, 0, 0])) {
+      // You have to convert arrays to strings to compare the values rather than addresses
       winGame();
     }
   }
@@ -90,7 +93,6 @@ export default function Game() {
     var blacksAndWhites: number[] = [];
     for (var i = 0; i < blacks; i++) blacksAndWhites.push(0);
     for (var i = 0; i < whites; i++) blacksAndWhites.push(1);
-    console.log(blacksAndWhites);
     return blacksAndWhites;
   }
 
@@ -159,7 +161,6 @@ type prevGuessProp = {
 };
 
 function GuessRow({ prevGuess }: prevGuessProp) {
-  console.log(prevGuess);
   return (
     <Group position="center">
       {prevGuess[0].map((peg: number) => (
