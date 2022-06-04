@@ -10,6 +10,7 @@ import {
   Space,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
+import { useModals } from "@mantine/modals";
 import { useState } from "react";
 
 export default function Game() {
@@ -21,9 +22,6 @@ export default function Game() {
     defaultValue: [],
   });
 
-  const [newGameModal, setNewGameModal] = useState<boolean>(false);
-  const [winGameModal, setWinGameModal] = useState<boolean>(false);
-  const [loseGameModal, setLoseGameModal] = useState<boolean>(false);
   const [currentGuess, setCurrentGuess] = useState<number[]>([]);
   const [currentCode, setCurrentCode] = useLocalStorageValue<number[]>({
     key: "current_code",
@@ -32,6 +30,7 @@ export default function Game() {
 
   const CODE_LENGTH = 5;
   const NUM_COLOURS = 8;
+  const MAX_GUESSES = 6;
 
   function newGame() {
     console.log("Starting new game...");
@@ -58,7 +57,10 @@ export default function Game() {
     console.log(guessResult);
     if (JSON.stringify(guessResult) === JSON.stringify([0, 0, 0, 0, 0])) {
       // You have to convert arrays to strings to compare the values rather than addresses
-      winGame();
+      winGameModal();
+    } else if (prevGuesses.length === MAX_GUESSES) {
+      // Disable the user input
+      loseGameModal();
     }
   }
 
@@ -96,15 +98,24 @@ export default function Game() {
     return blacksAndWhites;
   }
 
-  function winGame() {
-    console.log("Game Won!");
-    setWinGameModal(true);
-  }
+  const modals = useModals();
+  const winGameModal = () =>
+    modals.openConfirmModal({
+      title: "Congradulations You Won!",
+      children: <Text size="sm">Press new game to start a new game :)</Text>,
+      labels: { confirm: "New Game", cancel: "Cancel" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => newGame(),
+    });
 
-  function loseGame() {
-    console.log("Game lost!");
-    setLoseGameModal(true);
-  }
+  const loseGameModal = () =>
+    modals.openConfirmModal({
+      title: "Unlucky you lost!",
+      children: <Text size="sm">Press new game to start a new game :)</Text>,
+      labels: { confirm: "New Game", cancel: "Cancel" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => newGame(),
+    });
 
   return (
     <>
@@ -180,8 +191,6 @@ type PegProp = {
 };
 
 function Peg({ peg, size }: PegProp) {
-  const theme = useMantineTheme();
-
   const colourMap = [
     "black",
     "white",

@@ -9,6 +9,7 @@ import { useLocalStorageValue } from "@mantine/hooks";
 import { useState } from "react";
 import MyHeader from "./components/MyHeader";
 import Game from "./components/Game";
+import { ModalsProvider } from "@mantine/modals";
 
 export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorageValue<ColorScheme>({
@@ -31,21 +32,23 @@ export default function App() {
       toggleColorScheme={toggleColorScheme}
     >
       <MantineProvider theme={{ colorScheme }}>
-        <AppShell
-          padding="md"
-          header={<MyHeader />}
-          styles={(theme) => ({
-            main: {
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-            },
-          })}
-          fixed
-        >
-          <Game />
-        </AppShell>
+        <ModalsProvider>
+          <AppShell
+            padding="md"
+            header={<MyHeader />}
+            styles={(theme) => ({
+              main: {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[8]
+                    : theme.colors.gray[0],
+              },
+            })}
+            fixed
+          >
+            <Game />
+          </AppShell>
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
