@@ -4,9 +4,10 @@ import { ColorSwatch } from "@mantine/core";
 type PegProp = {
   peg: number;
   size: number;
+  style?: any;
 };
 
-export default function Peg({ peg, size }: PegProp) {
+export default function Peg({ peg, size, style }: PegProp) {
   const theme = useMantineTheme();
   const dark = theme.colorScheme === "dark";
   const colourMap = [
@@ -44,6 +45,7 @@ export default function Peg({ peg, size }: PegProp) {
       m={peg === 9 ? padding : 0}
       color={pegColour}
       radius={peg === 9 ? "sm" : "xl"}
+      style={style}
       children={peg === 8 ? <Text>?</Text> : ""}
     />
   );

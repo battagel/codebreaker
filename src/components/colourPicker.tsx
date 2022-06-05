@@ -7,7 +7,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import Peg from "./Peg";
-import { Button, Group, Space } from "@mantine/core";
+import { Button, Group, Space, useMantineTheme } from "@mantine/core";
 
 // Add these to context ??
 const NUM_COLOURS = 8;
@@ -24,6 +24,7 @@ export default function ColourPicker({
   setCurrentGuess,
   makeGuess,
 }: ColourPickerProp) {
+  const theme = useMantineTheme();
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -45,7 +46,16 @@ export default function ColourPicker({
             )}
           </Droppable>
         ))}
-        <Button onClick={() => makeGuess()}>Confirm</Button>
+        <Button
+          size="sm"
+          compact
+          variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+          radius="xl"
+          color="cyan"
+          onClick={() => makeGuess()}
+        >
+          Guess
+        </Button>
       </Group>
       <Space h="md" />
       <ColourPalette />
@@ -56,14 +66,14 @@ export default function ColourPicker({
 function ColourPalette() {
   var colours: number[] = [];
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-    ...draggableStyle,
+    boxShadow: isDragging ? "0px 6px 10px 3px rgba(0,0,0,0.15)" : "",
   });
 
   for (var i = 0; i < NUM_COLOURS; i++) {
     colours.push(i);
   }
   return (
-    <Droppable droppableId="tray">
+    <Droppable droppableId="tray" isDropDisabled={true}>
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           <Group position="center">
@@ -79,18 +89,32 @@ function ColourPalette() {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
                     >
-                      <Peg key={uuidv4()} peg={peg} size={25} />
+                      <Peg
+                        key={uuidv4()}
+                        peg={peg}
+                        size={25}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      />
                     </div>
                   )}
                 </Draggable>
               );
             })}
           </Group>
+          <div
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              height: "10px",
+              background: "tomato",
+              width: "10px",
+            }}
+          />
         </div>
       )}
     </Droppable>

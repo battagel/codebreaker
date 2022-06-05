@@ -1,13 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import {
   Text,
-  useMantineTheme,
   Container,
   Stack,
-  ColorSwatch,
-  Button,
   Group,
-  TextInput,
   Space,
   Paper,
 } from "@mantine/core";
