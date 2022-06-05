@@ -6,7 +6,9 @@ export default function MyFooter() {
       <Text
         sx={(theme) => ({
           color:
-            theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[3]
+              : theme.colors.gray[5],
         })}
       >
         Made by Matthew Battagel

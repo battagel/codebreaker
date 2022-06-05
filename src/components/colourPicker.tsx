@@ -44,8 +44,13 @@ export default function ColourPicker({
   };
 
   return (
-    <Box sx={{ height: 100, position: "relative" }}>
-      {!userInput && <Overlay opacity={0.6} color="#fff" />}
+    <Box sx={{ height: 100, position: "relative" }} p="md">
+      {!userInput && (
+        <Overlay
+          opacity={0.6}
+          color={theme.colorScheme === "dark" ? "#111" : "#fff"}
+        />
+      )}
       <DragDropContext onDragEnd={onDragEnd}>
         <Group position="center">
           {currentGuess.map((peg: number, index: number) => (

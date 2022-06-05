@@ -1,8 +1,18 @@
 import { v4 as uuidv4 } from "uuid";
-import { Text, Container, Stack, Group, Space, Paper } from "@mantine/core";
+import {
+  Text,
+  Container,
+  Stack,
+  Group,
+  Space,
+  Paper,
+  Button,
+  Center,
+  useMantineTheme,
+} from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyFooter from "./MyFooter";
 import Peg from "./Peg";
 import ColourPicker from "./colourPicker";
@@ -23,17 +33,27 @@ export default function Game() {
   const [currentGuess, setCurrentGuess] = useState<number[]>([0, 0, 0, 0, 0]);
   const [currentCode, setCurrentCode] = useLocalStorageValue<number[]>({
     key: "current_code",
-    defaultValue: [1, 2, 3, 4, 5],
+    defaultValue: [],
   });
 
   const CODE_LENGTH = 5;
   const NUM_COLOURS = 8;
   const MAX_GUESSES = 6;
 
+  const theme = useMantineTheme();
+
+  useEffect(() => {
+    if (JSON.stringify(currentCode) === "[]") {
+      console.log("First time loading");
+      setCurrentCode(newCode());
+    }
+  });
+
   function newGame() {
     console.log("Starting new game...");
     setPrevGuesses([]);
-    newCode();
+    setCurrentCode(newCode());
+    setUserInput(true);
   }
 
   function newCode() {
@@ -43,8 +63,7 @@ export default function Game() {
       new_code.push(Math.floor(Math.random() * NUM_COLOURS));
     }
     console.log(new_code);
-    setCurrentCode(new_code);
-    setUserInput(true);
+    return new_code;
   }
 
   function makeGuess() {
@@ -59,7 +78,6 @@ export default function Game() {
       setUserInput(false);
       winGameModal();
     } else if (prevGuesses.length === MAX_GUESSES - 1) {
-      // Disable the user input
       setUserInput(false);
       loseGameModal();
     }
@@ -140,6 +158,18 @@ export default function Game() {
             ))}
           </Stack>
         </Container>
+        <Space h="xl" />
+        <Center>
+          {!userInput && (
+            <Button
+              color="cyan"
+              variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+              onClick={() => newGame()}
+            >
+              New Game
+            </Button>
+          )}
+        </Center>
       </Paper>
       <Paper p="md">
         <ColourPicker
