@@ -15,6 +15,8 @@ import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
 import { useState } from "react";
 import MyFooter from "./MyFooter";
+import Peg from "./Peg";
+import ColourPicker from "./colourPicker";
 
 export default function Game() {
   const [hiddenCode, setHiddenCode] = useState<boolean>(true);
@@ -25,7 +27,7 @@ export default function Game() {
     defaultValue: [],
   });
 
-  const [currentGuess, setCurrentGuess] = useState<number[]>([]);
+  const [currentGuess, setCurrentGuess] = useState<number[]>([0, 0, 0, 0, 0]);
   const [currentCode, setCurrentCode] = useLocalStorageValue<number[]>({
     key: "current_code",
     defaultValue: [1, 2, 3, 4, 5],
@@ -144,24 +146,11 @@ export default function Game() {
         </Container>
       </Paper>
       <Paper p="md">
-        <Container>
-          <TextInput
-            placeholder="1,2,3,4,5"
-            label="Your guess"
-            onChange={(event) => {
-              setCurrentGuess(event.currentTarget.value.split(",").map(Number));
-            }}
-          />
-          <Space h="md" />
-          <Button onClick={() => makeGuess()}>Submit</Button>
-
-          <Button
-            onClick={() => setHiddenCode(hiddenCode === false ? true : false)}
-          >
-            Toggle Hidden
-          </Button>
-          <Button onClick={() => newGame()}>New game</Button>
-        </Container>
+        <ColourPicker
+          currentGuess={currentGuess}
+          setCurrentGuess={setCurrentGuess}
+          makeGuess={makeGuess}
+        />
       </Paper>
       <MyFooter />
     </Stack>
@@ -198,53 +187,5 @@ function GuessRow({ prevGuess }: prevGuessProp) {
         <Peg key={uuidv4()} peg={peg} size={30} />
       ))}
     </Group>
-  );
-}
-
-type PegProp = {
-  peg: number;
-  size: number;
-};
-
-function Peg({ peg, size }: PegProp) {
-  const theme = useMantineTheme();
-  const dark = theme.colorScheme === "dark";
-  const colourMap = [
-    "black",
-    "white",
-    "red",
-    "blue",
-    "yellow",
-    "green",
-    "orange",
-    "brown",
-    "grey",
-  ];
-  // There are 9 colours assigned 0 through 8
-  // 9 is reserved for "empty" pegs
-
-  var pegColour: any;
-
-  if (peg <= 8) {
-    pegColour = colourMap[peg];
-  } else {
-    if (dark) {
-      pegColour = theme.colors.dark[6];
-    } else {
-      pegColour = theme.colors.gray[0];
-    }
-  }
-
-  const emptySize: number = 8;
-  const padding: number = (size - emptySize) / 2;
-
-  return (
-    <ColorSwatch
-      size={peg === 9 ? emptySize : size}
-      m={peg === 9 ? padding : 0}
-      color={pegColour}
-      radius={peg === 9 ? "sm" : "xl"}
-      children={peg === 8 ? <Text>?</Text> : ""}
-    />
   );
 }
