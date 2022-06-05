@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import {
+  Notification,
   Text,
   Container,
   Stack,
@@ -30,11 +31,12 @@ export default function Game() {
     key: "user_input_boolean",
     defaultValue: true,
   });
-  const [currentGuess, setCurrentGuess] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [currentGuess, setCurrentGuess] = useState<number[]>([9, 9, 9, 9, 9]);
   const [currentCode, setCurrentCode] = useLocalStorageValue<number[]>({
     key: "current_code",
     defaultValue: [],
   });
+  const [notification, setNotification] = useState<boolean>(false);
 
   const CODE_LENGTH = 5;
   const NUM_COLOURS = 8;
@@ -53,6 +55,7 @@ export default function Game() {
     console.log("Starting new game...");
     setPrevGuesses([]);
     setCurrentCode(newCode());
+    setHiddenCode(true);
     setUserInput(true);
   }
 
@@ -67,19 +70,27 @@ export default function Game() {
   }
 
   function makeGuess() {
-    const guessString: string = currentGuess.toString();
-    console.log("Making guess of: " + guessString);
-    const guessResult: number[] = checkGuess();
-    const guessAndResult: Array<number[]> = [guessResult, currentGuess];
-    setPrevGuesses([guessAndResult, ...prevGuesses]);
-    console.log(guessResult);
-    if (JSON.stringify(guessResult) === JSON.stringify([0, 0, 0, 0, 0])) {
-      // You have to convert arrays to strings to compare the values rather than addresses
-      setUserInput(false);
-      winGameModal();
-    } else if (prevGuesses.length === MAX_GUESSES - 1) {
-      setUserInput(false);
-      loseGameModal();
+    if (currentGuess.includes(9)) {
+      console.log("Not a valid guess. Please fill all pegs");
+      setNotification(true);
+    } else {
+      const guessString: string = currentGuess.toString();
+      console.log("Making guess of: " + guessString);
+      const guessResult: number[] = checkGuess();
+      const guessAndResult: Array<number[]> = [guessResult, currentGuess];
+      setPrevGuesses([guessAndResult, ...prevGuesses]);
+      setCurrentGuess([9, 9, 9, 9, 9]);
+      console.log(guessResult);
+      if (JSON.stringify(guessResult) === JSON.stringify([0, 0, 0, 0, 0])) {
+        // You have to convert arrays to strings to compare the values rather than addresses
+        setUserInput(false);
+        setHiddenCode(false);
+        winGameModal();
+      } else if (prevGuesses.length === MAX_GUESSES - 1) {
+        setUserInput(false);
+        setHiddenCode(false);
+        loseGameModal();
+      }
     }
   }
 
@@ -180,6 +191,11 @@ export default function Game() {
         />
       </Paper>
       <MyFooter />
+      {notification && (
+        <Notification color="red" title="We notify you that">
+          You are now obligated to give a star to Mantine project on GitHub
+        </Notification>
+      )}
     </Stack>
   );
 }

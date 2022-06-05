@@ -73,7 +73,7 @@ export default function ColourPicker({
             Guess
           </Button>
         </Group>
-        <Space h="md" />
+        <Space h="xl" />
         <ColourPalette />
       </DragDropContext>
     </Box>
