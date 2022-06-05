@@ -7,7 +7,14 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import Peg from "./Peg";
-import { Button, Group, Space, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Group,
+  Overlay,
+  Space,
+  useMantineTheme,
+} from "@mantine/core";
 
 // Add these to context ??
 const NUM_COLOURS = 8;
@@ -17,12 +24,14 @@ type ColourPickerProp = {
   currentGuess: number[];
   setCurrentGuess: Dispatch<SetStateAction<number[]>>;
   makeGuess: () => void;
+  userInput: boolean;
 };
 
 export default function ColourPicker({
   currentGuess,
   setCurrentGuess,
   makeGuess,
+  userInput,
 }: ColourPickerProp) {
   const theme = useMantineTheme();
   const onDragEnd = (result: DropResult) => {
@@ -35,31 +44,34 @@ export default function ColourPicker({
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Group position="center">
-        {currentGuess.map((peg: number, index: number) => (
-          <Droppable droppableId={index.toString()}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <Peg key={uuidv4()} peg={peg} size={30} />
-              </div>
-            )}
-          </Droppable>
-        ))}
-        <Button
-          size="sm"
-          compact
-          variant={theme.colorScheme === "dark" ? "outline" : "filled"}
-          radius="xl"
-          color="cyan"
-          onClick={() => makeGuess()}
-        >
-          Guess
-        </Button>
-      </Group>
-      <Space h="md" />
-      <ColourPalette />
-    </DragDropContext>
+    <Box sx={{ height: 100, position: "relative" }}>
+      {!userInput && <Overlay opacity={0.6} color="#fff" />}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Group position="center">
+          {currentGuess.map((peg: number, index: number) => (
+            <Droppable droppableId={index.toString()}>
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <Peg key={uuidv4()} peg={peg} size={30} />
+                </div>
+              )}
+            </Droppable>
+          ))}
+          <Button
+            size="sm"
+            compact
+            variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+            radius="xl"
+            color="cyan"
+            onClick={() => makeGuess()}
+          >
+            Guess
+          </Button>
+        </Group>
+        <Space h="md" />
+        <ColourPalette />
+      </DragDropContext>
+    </Box>
   );
 }
 
@@ -105,16 +117,6 @@ function ColourPalette() {
               );
             })}
           </Group>
-          <div
-            style={{
-              position: "absolute",
-              top: "10px",
-              left: "10px",
-              height: "10px",
-              background: "tomato",
-              width: "10px",
-            }}
-          />
         </div>
       )}
     </Droppable>

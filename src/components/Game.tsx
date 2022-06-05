@@ -1,12 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  Text,
-  Container,
-  Stack,
-  Group,
-  Space,
-  Paper,
-} from "@mantine/core";
+import { Text, Container, Stack, Group, Space, Paper } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
 import { useState } from "react";
@@ -23,6 +16,10 @@ export default function Game() {
     defaultValue: [],
   });
 
+  const [userInput, setUserInput] = useLocalStorageValue<boolean>({
+    key: "user_input_boolean",
+    defaultValue: true,
+  });
   const [currentGuess, setCurrentGuess] = useState<number[]>([0, 0, 0, 0, 0]);
   const [currentCode, setCurrentCode] = useLocalStorageValue<number[]>({
     key: "current_code",
@@ -47,6 +44,7 @@ export default function Game() {
     }
     console.log(new_code);
     setCurrentCode(new_code);
+    setUserInput(true);
   }
 
   function makeGuess() {
@@ -58,9 +56,11 @@ export default function Game() {
     console.log(guessResult);
     if (JSON.stringify(guessResult) === JSON.stringify([0, 0, 0, 0, 0])) {
       // You have to convert arrays to strings to compare the values rather than addresses
+      setUserInput(false);
       winGameModal();
-    } else if (prevGuesses.length === MAX_GUESSES) {
+    } else if (prevGuesses.length === MAX_GUESSES - 1) {
       // Disable the user input
+      setUserInput(false);
       loseGameModal();
     }
   }
@@ -146,6 +146,7 @@ export default function Game() {
           currentGuess={currentGuess}
           setCurrentGuess={setCurrentGuess}
           makeGuess={makeGuess}
+          userInput={userInput}
         />
       </Paper>
       <MyFooter />
