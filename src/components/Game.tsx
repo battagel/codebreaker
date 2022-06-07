@@ -10,6 +10,7 @@ import {
   Button,
   Center,
   useMantineTheme,
+  List,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
@@ -40,13 +41,14 @@ export default function Game() {
 
   const CODE_LENGTH = 5;
   const NUM_COLOURS = 8;
-  const MAX_GUESSES = 6;
+  const MAX_GUESSES = 12;
 
   const theme = useMantineTheme();
 
   useEffect(() => {
     if (JSON.stringify(currentCode) === "[]") {
       console.log("First time loading");
+      firstLoadModal();
       setCurrentCode(newCode());
     }
   });
@@ -136,7 +138,7 @@ export default function Game() {
     modals.openConfirmModal({
       title: "Congradulations You Won!",
       children: <Text size="sm">Press new game to start a new game :)</Text>,
-      labels: { confirm: "New Game", cancel: "Cancel" },
+      labels: { confirm: "New Game", cancel: "See game" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => newGame(),
     });
@@ -145,11 +147,77 @@ export default function Game() {
     modals.openConfirmModal({
       title: "Unlucky you lost!",
       children: <Text size="sm">Press new game to start a new game :)</Text>,
-      labels: { confirm: "New Game", cancel: "Cancel" },
+      labels: { confirm: "New Game", cancel: "See game" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => newGame(),
     });
 
+  const firstLoadModal = () => {
+    const id = modals.openModal({
+      title: "Welcome to Codebreaker!",
+      children: (
+        <>
+          <Text size="sm">Press START to start a new game :)</Text>
+          <Group position="right">
+            <Button onClick={() => modals.closeModal(id)} mt="md">
+              Start
+            </Button>
+            <Button
+              variant="default"
+              onClick={() => {
+                modals.closeModal(id);
+                helpModal();
+              }}
+              mt="md"
+            >
+              Help
+            </Button>
+          </Group>
+        </>
+      ),
+    });
+  };
+
+  const helpModal = () => {
+    const id = modals.openModal({
+      title: "How to play Codebreaker",
+      children: (
+        <>
+          <Stack>
+            <Text>
+              Codebreaker is a PvC game based on the boardgame mastermind.
+            </Text>
+            <Text>
+              At the top there is a hidden code made up of 5 of the possible 8
+              colours shown in the colour pallet. To win the game you need to
+              correctly guess the colour of every peg in order.
+            </Text>
+            <Text>
+              After each guess you will get a number of black and white pegs to
+              the left of your guess. Each peg has a different meaning.
+            </Text>
+            <List>
+              <List.Item>
+                A black peg means right colour and right position
+              </List.Item>
+              <List.Item>
+                A white peg means right colour and wrong position
+              </List.Item>
+            </List>
+            <Text>
+              Note, the black and white pegs do not correspond the specific
+              positions of your guess. Use this information to refine your
+              guesses until you find the code!
+            </Text>
+            <Text>Good luck! Press close to return to the game.</Text>
+          </Stack>
+          <Button fullWidth onClick={() => modals.closeModal(id)} mt="md">
+            Close
+          </Button>
+        </>
+      ),
+    });
+  };
   return (
     <Stack
       justify="space-between"
@@ -160,7 +228,7 @@ export default function Game() {
           <Code code={currentCode} hidden={hiddenCode} />
         </Container>
       </Paper>
-      <Paper p="md" sx={{ height: "100%" }}>
+      <Paper p="md" sx={{ height: "100%", position: "relative" }}>
         <Space h="md" />
         <Container>
           <Stack>
@@ -181,6 +249,19 @@ export default function Game() {
             </Button>
           )}
         </Center>
+        <Text
+          align="center"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          You have {MAX_GUESSES - prevGuesses.length} guess
+          {MAX_GUESSES - prevGuesses.length === 1 ? "" : "es"} remaining
+        </Text>
       </Paper>
       <Paper p="md">
         <ColourPicker
@@ -191,11 +272,13 @@ export default function Game() {
         />
       </Paper>
       <MyFooter />
-      {notification && (
-        <Notification color="red" title="We notify you that">
-          You are now obligated to give a star to Mantine project on GitHub
-        </Notification>
-      )}
+      {/*
+       *{notification && (
+       *  <Notification color="red" title="We notify you that">
+       *    You are now obligated to give a star to Mantine project on GitHub
+       *  </Notification>
+       *)}
+       */}
     </Stack>
   );
 }

@@ -6,7 +6,6 @@ import {
   AppShell,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
-import { useState } from "react";
 import MyHeader from "./components/MyHeader";
 import Game from "./components/Game";
 import { ModalsProvider } from "@mantine/modals";
@@ -21,10 +20,6 @@ export default function App() {
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
     console.log(colorScheme);
   }
-
-  const [menuOpened, setMenuOpened] = useState<boolean>(false);
-
-  const [firstLoadModal, setFirstLoadModal] = useState<boolean>(false);
 
   return (
     <ColorSchemeProvider
