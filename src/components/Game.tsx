@@ -157,7 +157,9 @@ export default function Game() {
       title: "Welcome to Codebreaker!",
       children: (
         <>
-          <Text size="sm">Press START to start a new game :)</Text>
+          <Text size="sm">
+            Press START to start a new game or help for how to play
+          </Text>
           <Group position="right">
             <Button onClick={() => modals.closeModal(id)} mt="md">
               Start
@@ -229,7 +231,19 @@ export default function Game() {
         </Container>
       </Paper>
       <Paper p="md" sx={{ height: "100%", position: "relative" }}>
-        <Space h="md" />
+        <Group position="right">
+          <Button
+            size="sm"
+            compact
+            variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+            radius="xl"
+            color="cyan"
+            style={{}}
+            onClick={() => helpModal()}
+          >
+            ?
+          </Button>
+        </Group>
         <Container>
           <Stack>
             {prevGuesses.map((prevGuess: Array<number[]>) => (
