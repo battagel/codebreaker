@@ -252,16 +252,21 @@ export default function Game() {
           </Stack>
         </Container>
         <Space h="xl" />
-        <Center>
-          {!userInput && (
-            <Button
-              color="cyan"
-              variant={theme.colorScheme === "dark" ? "outline" : "filled"}
-              onClick={() => newGame()}
-            >
-              New Game
-            </Button>
-          )}
+        <Center
+          style={{
+            position: "absolute",
+            bottom: "55px",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            color="cyan"
+            variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+            onClick={() => newGame()}
+          >
+            New Game
+          </Button>
         </Center>
         <Text
           align="center"
