@@ -232,58 +232,51 @@ export default function Game() {
         </Container>
       </Paper>
       <Paper p="md" sx={{ height: "100%", position: "relative" }}>
-        <Group position="right">
-          <Tooltip label="Help" withArrow transition="slide-up">
-            <Button
-              size="sm"
-              compact
-              variant={theme.colorScheme === "dark" ? "outline" : "filled"}
-              radius="xl"
-              color="cyan"
-              style={{}}
-              onClick={() => helpModal()}
-            >
-              ?
-            </Button>
-          </Tooltip>
-        </Group>
-        <Container>
-          <Stack>
-            {prevGuesses.map((prevGuess: Array<number[]>) => (
-              <GuessRow key={uuidv4()} prevGuess={prevGuess} />
-            ))}
-          </Stack>
-        </Container>
-        <Space h="xl" />
-        <Center
-          style={{
-            position: "absolute",
-            bottom: "55px",
-            width: "100%",
-            justifyContent: "center",
-          }}
+        <Stack
+          justify="space-between"
+          align="stretch"
+          style={{ height: "100%" }}
         >
-          <Button
-            color="cyan"
-            variant={theme.colorScheme === "dark" ? "outline" : "filled"}
-            onClick={() => newGame()}
-          >
-            New Game
-          </Button>
-        </Center>
-        <Text
-          align="center"
-          style={{
-            position: "absolute",
-            bottom: "20px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          You have {MAX_GUESSES - prevGuesses.length} guess
-          {MAX_GUESSES - prevGuesses.length === 1 ? "" : "es"} remaining
-        </Text>
+          <Group position="right">
+            <Tooltip label="Help" withArrow transition="slide-up">
+              <Button
+                size="sm"
+                compact
+                variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+                radius="xl"
+                color="cyan"
+                style={{}}
+                onClick={() => helpModal()}
+              >
+                ?
+              </Button>
+            </Tooltip>
+          </Group>
+          <Container style={{ height: "100%" }}>
+            <Stack>
+              {prevGuesses.map((prevGuess: Array<number[]>) => (
+                <GuessRow key={uuidv4()} prevGuess={prevGuess} />
+              ))}
+            </Stack>
+          </Container>
+          <Container>
+            <Space h="xl" />
+            <Center>
+              <Button
+                color="cyan"
+                variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+                onClick={() => newGame()}
+              >
+                New Game
+              </Button>
+            </Center>
+            <Space h="xs" />
+            <Text>
+              You have {MAX_GUESSES - prevGuesses.length} guess
+              {MAX_GUESSES - prevGuesses.length === 1 ? "" : "es"} remaining
+            </Text>
+          </Container>
+        </Stack>
       </Paper>
       <Paper p="md">
         <ColourPicker
