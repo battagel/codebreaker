@@ -162,11 +162,16 @@ export default function Game() {
             Press START to start a new game or help for how to play
           </Text>
           <Group position="right">
-            <Button onClick={() => modals.closeModal(id)} mt="md">
+            <Button
+              color="yellow"
+              onClick={() => modals.closeModal(id)}
+              mt="md"
+            >
               Start
             </Button>
             <Button
               variant="default"
+              color="yellow"
               onClick={() => {
                 modals.closeModal(id);
                 helpModal();
@@ -214,7 +219,12 @@ export default function Game() {
             </Text>
             <Text>Good luck! Press close to return to the game.</Text>
           </Stack>
-          <Button fullWidth onClick={() => modals.closeModal(id)} mt="md">
+          <Button
+            color="yellow"
+            fullWidth
+            onClick={() => modals.closeModal(id)}
+            mt="md"
+          >
             Close
           </Button>
         </>
@@ -244,7 +254,7 @@ export default function Game() {
                 compact
                 variant={theme.colorScheme === "dark" ? "outline" : "filled"}
                 radius="xl"
-                color="cyan"
+                color="yellow"
                 style={{}}
                 onClick={() => helpModal()}
               >
@@ -263,7 +273,7 @@ export default function Game() {
             <Space h="xl" />
             <Center>
               <Button
-                color="cyan"
+                color="yellow"
                 variant={theme.colorScheme === "dark" ? "outline" : "filled"}
                 onClick={() => newGame()}
               >

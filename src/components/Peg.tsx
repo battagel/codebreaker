@@ -13,12 +13,12 @@ export default function Peg({ peg, size, style }: PegProp) {
   const colourMap = [
     "black",
     "white",
+    "#855c2d",
     "red",
-    "blue",
+    "orange",
     "yellow",
     "green",
-    "orange",
-    "brown",
+    "blue",
     "grey",
   ];
   // There are 9 colours assigned 0 through 8
