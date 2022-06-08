@@ -11,6 +11,7 @@ import {
   Center,
   useMantineTheme,
   List,
+  Tooltip,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
@@ -232,17 +233,19 @@ export default function Game() {
       </Paper>
       <Paper p="md" sx={{ height: "100%", position: "relative" }}>
         <Group position="right">
-          <Button
-            size="sm"
-            compact
-            variant={theme.colorScheme === "dark" ? "outline" : "filled"}
-            radius="xl"
-            color="cyan"
-            style={{}}
-            onClick={() => helpModal()}
-          >
-            ?
-          </Button>
+          <Tooltip label="Help" withArrow transition="slide-up">
+            <Button
+              size="sm"
+              compact
+              variant={theme.colorScheme === "dark" ? "outline" : "filled"}
+              radius="xl"
+              color="cyan"
+              style={{}}
+              onClick={() => helpModal()}
+            >
+              ?
+            </Button>
+          </Tooltip>
         </Group>
         <Container>
           <Stack>
