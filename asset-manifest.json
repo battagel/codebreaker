@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/codebreaker/static/css/main.073c9b0a.css",
-    "main.js": "/codebreaker/static/js/main.50d8a1c2.js",
+    "main.js": "/codebreaker/static/js/main.d173f173.js",
     "static/js/787.1dec7856.chunk.js": "/codebreaker/static/js/787.1dec7856.chunk.js",
     "index.html": "/codebreaker/index.html",
     "main.073c9b0a.css.map": "/codebreaker/static/css/main.073c9b0a.css.map",
-    "main.50d8a1c2.js.map": "/codebreaker/static/js/main.50d8a1c2.js.map",
+    "main.d173f173.js.map": "/codebreaker/static/js/main.d173f173.js.map",
     "787.1dec7856.chunk.js.map": "/codebreaker/static/js/787.1dec7856.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.50d8a1c2.js"
+    "static/js/main.d173f173.js"
   ]
 }
