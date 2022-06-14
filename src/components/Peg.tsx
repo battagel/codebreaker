@@ -40,15 +40,13 @@ export default function Peg({ peg, size, style }: PegProp) {
   const padding: number = (size - emptySize) / 2;
 
   return (
-    <Tooltip label="Drag me!" withArrow transition="slide-up" openDelay={1000}>
-      <ColorSwatch
-        size={peg === 9 ? emptySize : size}
-        m={peg === 9 ? padding : 0}
-        color={pegColour}
-        radius={peg === 9 ? "sm" : "xl"}
-        style={style}
-        children={peg === 8 ? <Text>?</Text> : ""}
-      />
-    </Tooltip>
+    <ColorSwatch
+      size={peg === 9 ? emptySize : size}
+      m={peg === 9 ? padding : 0}
+      color={pegColour}
+      radius={peg === 9 ? "sm" : "xl"}
+      style={style}
+      children={peg === 8 ? <Text>?</Text> : ""}
+    />
   );
 }
