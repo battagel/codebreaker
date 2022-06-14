@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import {
-  Notification,
   Text,
   Container,
   Stack,
@@ -39,7 +38,6 @@ export default function Game() {
     key: "current_code",
     defaultValue: [],
   });
-  const [notification, setNotification] = useState<boolean>(false);
 
   const CODE_LENGTH = 5;
   const NUM_COLOURS = 8;
@@ -66,7 +64,7 @@ export default function Game() {
   function newCode() {
     console.log("Generating new code");
     var new_code: number[] = [];
-    for (var i = 0; i < CODE_LENGTH; i++) {
+    for (var code_iter = 0; code_iter < CODE_LENGTH; code_iter++) {
       new_code.push(Math.floor(Math.random() * NUM_COLOURS));
     }
     console.log(new_code);
@@ -105,11 +103,11 @@ export default function Game() {
     var code: Array<string | number> = [...currentCode];
     var guess: Array<string | number> = [...currentGuess];
 
-    for (var i = 0; i < code.length; i++) {
-      if (guess[i] === code[i]) {
+    for (var ptr = 0; ptr < code.length; ptr++) {
+      if (guess[ptr] === code[ptr]) {
         blacks += 1;
-        guess[i] = "B";
-        code[i] = "B";
+        guess[ptr] = "B";
+        code[ptr] = "B";
       }
     }
     for (var ptrA = 0; ptrA < code.length; ptrA++) {
@@ -127,8 +125,10 @@ export default function Game() {
     }
 
     var blacksAndWhites: number[] = [];
-    for (var i = 0; i < blacks; i++) blacksAndWhites.push(0);
-    for (var i = 0; i < whites; i++) blacksAndWhites.push(1);
+    for (var blk_iter = 0; blk_iter < blacks; blk_iter++)
+      blacksAndWhites.push(0);
+    for (var wht_iter = 0; wht_iter < whites; wht_iter++)
+      blacksAndWhites.push(1);
     while (blacksAndWhites.length < 5) {
       blacksAndWhites.push(9);
     }
@@ -312,13 +312,6 @@ export default function Game() {
         />
       </Paper>
       <MyFooter />
-      {/*
-       *{notification && (
-       *  <Notification color="red" title="We notify you that">
-       *    You are now obligated to give a star to Mantine project on GitHub
-       *  </Notification>
-       *)}
-       */}
     </Stack>
   );
 }
