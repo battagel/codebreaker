@@ -12,6 +12,7 @@ import {
   useMantineTheme,
   List,
   Tooltip,
+  ScrollArea,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
@@ -75,7 +76,7 @@ export default function Game() {
   function makeGuess() {
     if (currentGuess.includes(9)) {
       console.log("Not a valid guess. Please fill all pegs");
-      setNotification(true);
+      guessErrorModal();
     } else {
       const guessString: string = currentGuess.toString();
       console.log("Making guess of: " + guessString);
@@ -187,6 +188,23 @@ export default function Game() {
       ),
     });
   };
+  const guessErrorModal = () => {
+    const id = modals.openModal({
+      title: "Oops! Please fill in all pegs before guessing",
+      children: (
+        <Button
+          variant="default"
+          fullWidth
+          onClick={() => {
+            modals.closeModal(id);
+          }}
+          mt="md"
+        >
+          Close
+        </Button>
+      ),
+    });
+  };
 
   const helpModal = () => {
     const id = modals.openModal({
@@ -259,11 +277,13 @@ export default function Game() {
             </Tooltip>
           </Group>
           <Container style={{ height: "100%" }}>
-            <Stack>
-              {prevGuesses.map((prevGuess: Array<number[]>) => (
-                <GuessRow key={uuidv4()} prevGuess={prevGuess} />
-              ))}
-            </Stack>
+            <ScrollArea>
+              <Stack>
+                {prevGuesses.map((prevGuess: Array<number[]>) => (
+                  <GuessRow key={uuidv4()} prevGuess={prevGuess} />
+                ))}
+              </Stack>
+            </ScrollArea>
           </Container>
           <Container>
             <Space h="xl" />
@@ -291,7 +311,6 @@ export default function Game() {
           userInput={userInput}
         />
       </Paper>
-      <Button onClick={() => loseGameModal()}></Button>
       <MyFooter />
       {/*
        *{notification && (
