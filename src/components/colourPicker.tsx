@@ -67,7 +67,6 @@ export default function ColourPicker({
             compact
             variant={theme.colorScheme === "dark" ? "outline" : "filled"}
             radius="xl"
-            color="yellow"
             onClick={() => makeGuess()}
           >
             Guess

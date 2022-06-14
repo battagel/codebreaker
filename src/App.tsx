@@ -4,6 +4,7 @@ import {
   ColorSchemeProvider,
   MantineProvider,
   AppShell,
+  useMantineTheme,
 } from "@mantine/core";
 import { useLocalStorageValue } from "@mantine/hooks";
 import MyHeader from "./components/MyHeader";
@@ -21,12 +22,20 @@ export default function App() {
     console.log(colorScheme);
   }
 
+  const theme = useMantineTheme();
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
       toggleColorScheme={toggleColorScheme}
     >
-      <MantineProvider theme={{ colorScheme }}>
+      <MantineProvider
+        theme={{ colorScheme }}
+        defaultProps={{
+          Button: {
+            color: "yellow",
+          },
+        }}
+      >
         <ModalsProvider>
           <AppShell
             padding="md"

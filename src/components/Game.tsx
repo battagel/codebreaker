@@ -137,8 +137,15 @@ export default function Game() {
   const modals = useModals();
   const winGameModal = () =>
     modals.openConfirmModal({
-      title: "Congradulations You Won!",
-      children: <Text size="sm">Press new game to start a new game :)</Text>,
+      title: "Congratulations You Won!",
+      children: (
+        <>
+          <Text size="sm">
+            You guessed the code in {prevGuesses.length} guesses! Press new game
+            to start a new game :)
+          </Text>
+        </>
+      ),
       labels: { confirm: "New Game", cancel: "See game" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => newGame(),
@@ -162,16 +169,11 @@ export default function Game() {
             Press START to start a new game or help for how to play
           </Text>
           <Group position="right">
-            <Button
-              color="yellow"
-              onClick={() => modals.closeModal(id)}
-              mt="md"
-            >
+            <Button onClick={() => modals.closeModal(id)} mt="md">
               Start
             </Button>
             <Button
               variant="default"
-              color="yellow"
               onClick={() => {
                 modals.closeModal(id);
                 helpModal();
@@ -219,12 +221,7 @@ export default function Game() {
             </Text>
             <Text>Good luck! Press close to return to the game.</Text>
           </Stack>
-          <Button
-            color="yellow"
-            fullWidth
-            onClick={() => modals.closeModal(id)}
-            mt="md"
-          >
+          <Button fullWidth onClick={() => modals.closeModal(id)} mt="md">
             Close
           </Button>
         </>
@@ -254,7 +251,6 @@ export default function Game() {
                 compact
                 variant={theme.colorScheme === "dark" ? "outline" : "filled"}
                 radius="xl"
-                color="yellow"
                 style={{}}
                 onClick={() => helpModal()}
               >
@@ -273,7 +269,6 @@ export default function Game() {
             <Space h="xl" />
             <Center>
               <Button
-                color="yellow"
                 variant={theme.colorScheme === "dark" ? "outline" : "filled"}
                 onClick={() => newGame()}
               >
@@ -296,6 +291,7 @@ export default function Game() {
           userInput={userInput}
         />
       </Paper>
+      <Button onClick={() => loseGameModal()}></Button>
       <MyFooter />
       {/*
        *{notification && (
